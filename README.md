@@ -1,2 +1,2 @@
-# bmstu_stud_parser
+# Bmstu Stud Parser
 Парсинг информации с сайта studsovet.bmstu.ru
