@@ -1,6 +1,6 @@
 # Bmstu Stud Parser
 Парсинг информации с сайта studsovet.bmstu.ru
-##Команды
+## Команды
 Запуск :
 ```shell
 make run
