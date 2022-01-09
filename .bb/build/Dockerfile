@@ -1,5 +1,5 @@
 FROM alpine:latest
 
-COPY bin/bmstu_stud_parser .
+COPY bin/bmstu-stud-parser .
 
-CMD ["/bmstu_stud_parser"]
+CMD ["/bmstu-stud-parser"]

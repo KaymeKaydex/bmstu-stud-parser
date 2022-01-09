@@ -2,35 +2,38 @@ package parser
 
 import (
 	"fmt"
-	"github.com/KaymeKaydex/bmstu_stud_parser/internal/app/model"
+	"net/http"
+
 	"github.com/PuerkitoBio/goquery"
 	"github.com/geziyor/geziyor"
 	"github.com/geziyor/geziyor/client"
 	jww "github.com/spf13/jwalterweatherman"
-	"net/http"
+
+	"github.com/KaymeKaydex/bmstu-stud-parser/internal/app/model"
 )
 
-type Parser struct {
-}
+var ResultBucket []*model.News
 
-func (p *Parser)GetURLs(StartPage string) (URLs[]string) {
-	for i:=1;;i++{
-		resp, err := http.Get(StartPage + fmt.Sprintf("%d",i) +"/")
+type Parser struct{}
+
+func (p *Parser) GetURLs(StartPage string) (URLs []string) {
+	for i := 1; ; i++ {
+		resp, err := http.Get(StartPage + fmt.Sprintf("%d", i) + "/")
 
 		if err != nil {
 			jww.INFO.Fatalln("Smth went wrong")
 		}
 		if resp == nil || resp.StatusCode == http.StatusNotFound {
-			jww.INFO.Printf("Found %d pages",i-1)
+			jww.INFO.Printf("Found %d pages", i-1)
 			break
 		}
 
-		URLs = append(URLs, StartPage + fmt.Sprintf("%d",i)+"/")
+		URLs = append(URLs, StartPage+fmt.Sprintf("%d", i)+"/")
 	}
 	return URLs
 }
 
-func (p *Parser)Parse(g *geziyor.Geziyor, r *client.Response){
+func (p *Parser) Parse(g *geziyor.Geziyor, r *client.Response) {
 	r.HTMLDoc.Find("div.card").Each(func(_ int, s *goquery.Selection) {
 
 		img, err := s.Find("img").Attr("src")
@@ -40,10 +43,11 @@ func (p *Parser)Parse(g *geziyor.Geziyor, r *client.Response){
 		}
 
 		news := &model.News{
-			Title: s.Find("span.card-title.grey-text").Text(),
+			Title:       s.Find("span.card-title.grey-text").Text(),
 			Description: s.Find("p").Text(),
-			Image_URI: img,
+			ImageURI:    img,
 		}
-		fmt.Println(news.Title)
+
+		ResultBucket = append(ResultBucket, news)
 	})
 }

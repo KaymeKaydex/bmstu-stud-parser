@@ -1,9 +1,9 @@
 PWD = $(shell pwd)
-NAME = bmstu_stud_parser
+NAME = bmstu-stud-parser
 
 .PHONY: run
 run:
-	go run $(PWD)/cmd/bmstu_stud_parser/
+	go run $(PWD)/cmd/$(NAME)/
 
 .PHONY: build
 build:
